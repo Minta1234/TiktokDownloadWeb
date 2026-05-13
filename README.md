@@ -1,19 +1,17 @@
-# TiktokDownloadWeb
 # TikTok Media Downloader & Injector
 
 <div align="center">
 
-![TikTok Downloader Banner](https://img.shields.io/badge/TikTok-Media%20Downloader-ff004f?style=for-the-badge&logo=tiktok&logoColor=white)
 ![Version](https://img.shields.io/badge/version-2.0-blue?style=for-the-badge)
 ![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)
-![Python](https://img.shields.io/badge/Python-3.8+-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![Platform](https://img.shields.io/badge/platform-Web%20%7C%20Mobile-lightgrey?style=for-the-badge)
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 
-**A powerful tool to download, extract, and manipulate TikTok media content**
+**A complete web-based toolkit for downloading TikTok videos, extracting high-quality images, parsing JSON metadata, and injecting custom data**
 
-[Features](#features) • [Installation](#installation) • [Usage](#usage) • [API Reference](#api-reference) • [Contributing](#contributing)
+[Features](#features) • [Quick Start](#quick-start) • [Usage Guide](#usage-guide) • [API Reference](#api-reference) • [FAQ](#faq)
 
 </div>
 
@@ -23,128 +21,91 @@
 
 - [Overview](#overview)
 - [Features](#features)
-- [Installation](#installation)
+- [Quick Start](#quick-start)
 - [Usage Guide](#usage-guide)
 - [API Endpoints](#api-endpoints)
-- [Configuration](#configuration)
+- [File Structure](#file-structure)
+- [Browser Compatibility](#browser-compatibility)
 - [Troubleshooting](#troubleshooting)
-- [Contributing](#contributing)
+- [FAQ](#faq)
 - [License](#license)
 
 ---
 
 ## 🎯 Overview
 
-The **TikTok Media Downloader & Injector** is a comprehensive web-based tool that allows you to:
+The **TikTok Media Downloader & Injector** is a standalone HTML/JavaScript application that provides a professional interface for interacting with TikTok content. No installation required - simply open the HTML file in any modern browser!
 
-- 📥 Download TikTok videos in high quality (MP4 format)
-- 🎵 Extract audio from TikTok videos (MP3 format)
-- 📸 Extract hidden high-resolution images from TikTok photo posts
-- 📄 Parse and view complete JSON metadata from any TikTok post
-- 💉 Inject custom JSON data into downloaded content
-- 📦 Batch download multiple URLs simultaneously
+### Why Use This Tool?
 
-Built with modern web technologies and integrated with the TikWM API, this tool provides a seamless experience for content creators, researchers, and TikTok enthusiasts.
+| Feature | Benefit |
+|---------|---------|
+| **No Installation** | Just open the HTML file in your browser |
+| **No API Key Required** | Uses free public APIs |
+| **Cross-Platform** | Works on Windows, Mac, Linux, iOS, Android |
+| **Privacy Focused** | All processing happens in your browser |
+| **Completely Free** | No hidden costs or premium tiers |
 
 ---
 
 ## ✨ Features
 
-### 🎬 Video Downloader
-| Feature | Description |
-|---------|-------------|
-| **High Quality** | Download videos in original quality (up to 1080p) |
-| **Audio Extraction** | Extract audio as MP3 with 320kbps quality |
-| **Queue System** | Manage multiple downloads with persistent queue |
-| **Progress Tracking** | Real-time download progress indicators |
+### 📥 **Video Downloader**
+- Download TikTok videos in MP4 format
+- Extract audio as high-quality MP3
+- Smart URL detection
+- Download queue management
 
-### 📸 Image Extractor
-| Feature | Description |
-|---------|-------------|
-| **Hidden Images** | Extract all images from TikTok photo posts (including carousel) |
-| **Gallery View** | Thumbnail preview of all extracted images |
-| **Bulk Download** | Download all images with one click |
-| **High Resolution** | Get original quality images (no compression) |
+### 📸 **Image Extractor**
+- Extract all images from TikTok photo posts
+- Support for carousel/multiple images
+- High-resolution original quality
+- Bulk download capability
+- Gallery view with thumbnails
 
-### 📄 JSON Parser
-| Feature | Description |
-|---------|-------------|
-| **Complete Metadata** | Access all video/photo metadata including stats, creator info, etc. |
-| **Syntax Highlighting** | Color-coded JSON display for easy reading |
-| **Download Option** | Save metadata as JSON file |
+### 📄 **JSON Parser**
+- Fetch complete metadata from any TikTok post
+- View creator information, statistics, and more
+- Syntax-highlighted JSON display
+- Copy to clipboard functionality
 
-### 💉 JSON Injector
-| Feature | Description |
-|---------|-------------|
-| **Custom Data Injection** | Merge your own JSON data with TikTok metadata |
-| **Timestamps** | Automatic injection timestamp tracking |
-| **Export Capability** | Download the combined JSON structure |
+### 💉 **JSON Injector**
+- Inject custom JSON data into TikTok metadata
+- Merge original metadata with custom fields
+- Timestamp tracking for injections
+- Export combined JSON structure
 
-### 📦 Batch Downloader
-| Feature | Description |
-|---------|-------------|
-| **Multi-URL Processing** | Process up to 100 URLs at once |
-| **Flexible Options** | Choose what to download per batch (video/audio/JSON) |
-| **Parallel Processing** | Sequential processing with progress tracking |
-| **Results Summary** | Detailed success/failure report |
+### 📦 **Batch Downloader**
+- Process multiple URLs simultaneously
+- Configurable options (video, audio, JSON)
+- Progress tracking for each item
+- Summary report of successful/failed downloads
 
 ---
 
-## 🚀 Installation
+## 🚀 Quick Start
 
-### Quick Start (Web Version)
-
-Simply open the `index.html` file in any modern web browser. No server required!
+### Installation (Zero Setup!)
 
 ```bash
-# Clone the repository
-git clone https://github.com/yourusername/tiktok-media-downloader.git
+# Step 1: Download the HTML file
+# Save the complete HTML code as "tiktok-downloader.html"
 
-# Navigate to project directory
-cd tiktok-media-downloader
+# Step 2: Open in browser
+# Double-click the file or open with any modern browser
 
-# Open in browser (choose one)
-start index.html          # Windows
-open index.html           # macOS
-xdg-open index.html       # Linux
+# Step 3: Start using!
+# Paste a TikTok URL and click download
 ```
 
-### Python Backend Setup (Optional)
+### System Requirements
 
-For advanced features like server-side processing:
-
-```bash
-# Create virtual environment
-python -m venv venv
-
-# Activate virtual environment
-# Windows:
-venv\Scripts\activate
-# macOS/Linux:
-source venv/bin/activate
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Run the server
-python app.py
-```
-
-### Requirements
-
-- **Modern web browser** (Chrome, Firefox, Safari, Edge)
-- **Internet connection** (for API calls)
-- **Python 3.8+** (optional, for backend features)
-
-### Dependencies (Python Backend)
-
-```
-requests>=2.28.0
-tqdm>=4.64.0
-rich>=13.0.0
-yt-dlp>=2023.0.0
-pillow>=9.0.0
-```
+| Requirement | Minimum | Recommended |
+|-------------|---------|-------------|
+| **Browser** | Chrome 80+, Firefox 75+, Safari 13+ | Latest version |
+| **RAM** | 512 MB | 2 GB |
+| **Internet** | Broadband connection | Fiber optic |
+| **JavaScript** | Enabled | Enabled |
 
 ---
 
@@ -153,81 +114,107 @@ pillow>=9.0.0
 ### 1. Downloading Videos
 
 ```javascript
-// Example URL format
-https://www.tiktok.com/@username/video/1234567890123456789
-
-// Steps:
-1. Copy the TikTok video URL
-2. Paste into the "Video URL" field
+// Step-by-step:
+1. Navigate to the "Downloader" tab
+2. Paste your TikTok video URL in the input field
 3. Click "Download Video" or "Download Audio Only"
-4. File will automatically save to your downloads folder
+4. Wait for the download to complete
+5. File saves automatically to your Downloads folder
+```
+
+**Supported URL Formats:**
+```
+https://www.tiktok.com/@username/video/1234567890123456789
+https://vm.tiktok.com/XXXXXX/
+https://www.tiktok.com/t/XXXXXX/
 ```
 
 ### 2. Extracting Images from Photo Posts
 
 ```javascript
-// Example photo post URL
-https://www.tiktok.com/@username/photo/1234567890123456789
-
-// Steps:
-1. Copy the TikTok photo post URL
-2. Paste into the "Photo Post URL" field
+// Step-by-step:
+1. Go to the "Image Extractor" tab
+2. Paste a TikTok photo post URL
 3. Click "Extract Images"
-4. View gallery and download individual or all images
+4. View the gallery of extracted images
+5. Click individual images or "Download All"
 ```
 
-### 3. Fetching JSON Metadata
+**Photo Post URLs:**
+```
+https://www.tiktok.com/@username/photo/1234567890123456789
+```
+
+### 3. Parsing JSON Metadata
 
 ```javascript
-// Any TikTok URL works
-https://www.tiktok.com/@username/video/1234567890123456789
-
-// Steps:
-1. Paste any TikTok URL
-2. Click "Fetch Metadata"
-3. View structured JSON data
-4. Optionally download as JSON file
+// Step-by-step:
+1. Switch to the "JSON Parser" tab
+2. Enter any TikTok URL (video or photo)
+3. Click "Fetch Metadata"
+4. View the formatted JSON response
+5. Copy or analyze the data structure
 ```
+
+**Metadata Includes:**
+- Video/Photo information
+- Creator details
+- Statistics (views, likes, comments, shares)
+- Music information
+- Thumbnail URLs
 
 ### 4. Injecting Custom JSON
 
 ```json
-// Example custom JSON
+// Example custom JSON to inject:
 {
   "custom_tags": ["viral", "trending", "2024"],
-  "notes": "This is my personal annotation",
+  "personal_notes": "This content is amazing!",
   "rating": 5,
-  "categories": ["entertainment", "music"]
+  "categories": ["entertainment", "music", "dance"],
+  "my_metadata": {
+    "saved_date": "2024-01-15",
+    "collection": "favorites"
+  }
 }
 
 // Steps:
-1. Enter a TikTok URL (optional, for base metadata)
-2. Paste your custom JSON
-3. Click "Inject JSON"
-4. Download the merged data structure
+1. Go to "JSON Injector" tab
+2. (Optional) Enter a TikTok URL for base metadata
+3. Paste your custom JSON
+4. Click "Inject JSON"
+5. Download the merged result
 ```
 
 ### 5. Batch Processing
 
 ```
-# Example batch file content
+# Example batch file content (one URL per line):
 https://www.tiktok.com/@user1/video/1234567890
 https://www.tiktok.com/@user2/photo/9876543210
 https://www.tiktok.com/@user3/video/5555555555
+https://www.tiktok.com/@user4/video/1111111111
 
 // Options:
-✓ Download Videos
-□ Download Audio Only
-✓ Extract JSON Metadata
+✓ Download Videos     - Save MP4 files
+□ Download Audio Only - Save MP3 files only
+✓ Extract JSON        - Save metadata as JSON
+
+// Steps:
+1. Switch to "Batch Downloader" tab
+2. Paste multiple URLs (one per line)
+3. Select your options
+4. Click "Start Batch Download"
+5. Monitor progress and results
 ```
 
 ---
 
 ## 🔧 API Endpoints
 
-### TikWM API Integration
+### Primary API: TikWM
 
-The tool uses the [TikWM API](https://www.tikwm.com/) as its primary data source.
+The application uses the [TikWM API](https://www.tikwm.com/) for all data fetching.
 
 ```javascript
 // Base URL
@@ -236,59 +223,111 @@ const API_URL = 'https://www.tikwm.com/api/';
 // Request format
 GET ${API_URL}?url=${encodeURIComponent(tiktok_url)}
 
-// Response structure
+// Success Response Structure
 {
   "code": 0,
   "msg": "success",
   "data": {
-    "id": "video_id",
-    "title": "video_title",
-    "play": "video_url",
-    "music": "audio_url",
-    "images": ["image1_url", "image2_url"],
+    // Video/Photo information
+    "id": "string",
+    "title": "string",
+    "description": "string",
+    "duration": number,
+    "create_time": number,
+    
+    // Media URLs
+    "play": "string (video URL)",
+    "wmplay": "string (watermarked video)",
+    "music": "string (audio URL)",
+    "images": ["string"] (for photo posts),
+    
+    // Creator information
     "author": {
-      "id": "author_id",
-      "unique_id": "username",
-      "nickname": "display_name",
-      "avatar": "avatar_url"
+      "id": "string",
+      "unique_id": "string",
+      "nickname": "string",
+      "avatar": "string",
+      "signature": "string"
     },
+    
+    // Statistics
     "statistics": {
-      "play_count": 1000000,
-      "digg_count": 50000,
-      "comment_count": 1000,
-      "share_count": 500
-    }
+      "play_count": number,
+      "digg_count": number,
+      "comment_count": number,
+      "share_count": number,
+      "download_count": number
+    },
+    
+    // Additional data
+    "region": "string",
+    "private_item": boolean,
+    "duet_enabled": boolean,
+    "stitch_enabled": boolean,
+    "stickers_on_item": boolean
   }
 }
 ```
 
-### Proxy Usage
+### Error Response
 
-To avoid CORS issues, the web version uses:
-```
-https://api.allorigins.win/raw?url=${encoded_url}
+```javascript
+{
+  "code": -1,
+  "msg": "error message",
+  "data": null
+}
 ```
 
 ---
 
-## ⚙️ Configuration
+## 📁 File Structure
 
-### Browser Settings
+```
+tiktok-downloader.html
+├── <head>
+│   ├── Meta tags
+│   ├── CSS styles (embedded)
+│   └── Font families
+├── <body>
+│   ├── Container div
+│   │   ├── Header section
+│   │   ├── Tab navigation (5 tabs)
+│   │   ├── Downloader panel
+│   │   ├── Image Extractor panel
+│   │   ├── JSON Parser panel
+│   │   ├── JSON Injector panel
+│   │   └── Batch Downloader panel
+│   └── Script section
+│       ├── State management
+│       ├── API handlers
+│       ├── Download functions
+│       ├── UI updates
+│       └── Event listeners
+└── Dependencies (none - self-contained)
+```
 
-| Setting | Recommended | Reason |
-|---------|-------------|--------|
-| JavaScript | Enabled | Required for all functionality |
-| Pop-ups | Allowed | For download windows |
-| Storage | Enabled | For queue persistence |
-| CORS | Default | Using proxy for cross-origin |
+---
 
-### File Save Locations
+## 🌐 Browser Compatibility
 
-Downloads are saved to your browser's default download directory:
+| Browser | Minimum Version | Status |
+|---------|----------------|--------|
+| Google Chrome | 80+ | ✅ Fully Supported |
+| Mozilla Firefox | 75+ | ✅ Fully Supported |
+| Safari | 13+ | ✅ Fully Supported |
+| Microsoft Edge | 80+ | ✅ Fully Supported |
+| Opera | 67+ | ✅ Fully Supported |
+| Brave | 1.0+ | ✅ Fully Supported |
+| Mobile Chrome | 80+ | ✅ Supported |
+| Mobile Safari | 13+ | ✅ Supported |
 
-- **Windows**: `C:\Users\[Username]\Downloads`
-- **macOS**: `/Users/[Username]/Downloads`
-- **Linux**: `/home/[Username]/Downloads`
+**Required Browser Features:**
+- JavaScript ES6+
+- Fetch API
+- Blob API
+- LocalStorage
+- ES6 Promises
 
 ---
 
@@ -298,131 +337,86 @@ Downloads are saved to your browser's default download directory:
 
 | Issue | Possible Cause | Solution |
 |-------|---------------|----------|
-| **"Failed to fetch video info"** | Invalid URL | Verify the URL is correct and the video exists |
-| **Images not extracting** | Not a photo post | Ensure the URL is for a photo post (contains `/photo/`) |
-| **Download not starting** | Pop-up blocked | Allow pop-ups for this site in browser settings |
-| **Slow download speed** | Network congestion | Try again later or use a different network |
-| **CORS error** | Direct API access | Ensure using the proxy endpoint |
-| **JSON parse error** | Invalid JSON format | Validate your JSON before injection |
+| **"Failed to fetch video info"** | Invalid URL or video removed | Verify URL works in browser |
+| **CORS errors** | Browser security | Using proxy API (auto-handled) |
+| **Download doesn't start** | Pop-up blocker | Allow pop-ups for this site |
+| **Images not extracting** | Not a photo post | Ensure URL contains `/photo/` |
+| **JSON parse error** | Invalid JSON format | Validate JSON using online tool |
+| **Slow download speed** | Network congestion | Try again later or use different network |
 
 ### Debug Mode
 
-Enable console logging for debugging:
+Enable console logging for detailed debugging:
 
 ```javascript
-// Open browser console (F12)
+// Open browser console (F12) and run:
 localStorage.setItem('debug', 'true');
+location.reload();
+
+// To disable:
+localStorage.removeItem('debug');
 location.reload();
 ```
 
-### Support Resources
+### Clearing Application Data
 
-- 📖 [TikWM API Documentation](https://www.tikwm.com/docs)
-- 💬 [GitHub Issues](https://github.com/yourusername/tiktok-media-downloader/issues)
-- 📧 Email: support@example.com
+```javascript
+// Clear all saved data:
+localStorage.clear();
 
----
-
-## 🤝 Contributing
-
-We welcome contributions! Please follow these steps:
-
-1. **Fork the repository**
-2. **Create a feature branch**
-   ```bash
-   git checkout -b feature/amazing-feature
-   ```
-3. **Commit your changes**
-   ```bash
-   git commit -m 'Add amazing feature'
-   ```
-4. **Push to the branch**
-   ```bash
-   git push origin feature/amazing-feature
-   ```
-5. **Open a Pull Request**
-
-### Development Setup
-
-```bash
-# Install development dependencies
-pip install -r requirements-dev.txt
-
-# Run tests
-python -m pytest tests/
-
-# Format code
-black .
-isort .
-
-# Lint code
-flake8 .
-pylint src/
-```
-
-### Coding Standards
-
-- Follow PEP 8 for Python code
-- Use semantic HTML5 elements
-- Write vanilla JavaScript (no frameworks required)
-- Comment complex logic
-- Update documentation for new features
-
----
-
-## 📜 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-```
-MIT License
-
-Copyright (c) 2024 TikTok Media Downloader
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+// Or use the "Clear Queue" button in the UI
 ```
 
 ---
 
-## ⚠️ Disclaimer
+## ❓ FAQ
 
-This tool is for **educational purposes only**. Please respect:
+### Q1: Is this tool free to use?
+**A:** Yes, completely free! No hidden costs, no premium tiers.
 
-- TikTok's Terms of Service
-- Content creators' rights
-- Copyright laws in your jurisdiction
+### Q2: Do I need to install anything?
+**A:** No installation required. Just save the HTML file and open it in any browser.
 
-Do not use this tool to:
-- Download copyrighted content without permission
-- Violate TikTok's API terms
-- Distribute downloaded content without proper attribution
+### Q3: Does this violate TikTok's terms of service?
+**A:** This tool is for educational purposes. Always respect content creators' rights and TikTok's terms.
+
+### Q4: Can I download videos without watermark?
+**A:** Yes, the tool downloads videos without watermark when available.
+
+### Q5: What's the maximum video length supported?
+**A:** TikTok videos up to 10 minutes are supported.
+
+### Q6: Can I download multiple videos at once?
+**A:** Yes, use the Batch Downloader tab to process multiple URLs.
+
+### Q7: Where are downloaded files saved?
+**A:** Files save to your browser's default download location.
+
+### Q8: Does this work on mobile devices?
+**A:** Yes, the interface is responsive and works on iOS and Android browsers.
+
+### Q9: Is my data private?
+**A:** Yes, all processing happens in your browser. No data is sent to external servers except TikTok API calls.
+
+### Q10: What happens if TikTok changes their API?
+**A:** The tool uses TikWM API which is regularly updated. Updates will be provided if needed.
 
 ---
 
-## 📊 Version History
-
-| Version | Date | Changes |
-|---------|------|---------|
-| 2.0.0 | 2024-01-15 | Complete rewrite with modern UI, batch processing, JSON injector |
-| 1.5.0 | 2023-10-01 | Added image extractor and gallery view |
-| 1.0.0 | 2023-07-01 | Initial release with basic download functionality |
-
----
 
 ## 🙏 Acknowledgments
 
-- [TikWM API](https://www.tikwm.com/) for providing the data endpoint
-- [Font Awesome](https://fontawesome.com/) for icons
-- [Google Fonts](https://fonts.google.com/) for typography
+- [TikWM API](https://www.tikwm.com/) - Free TikTok API service
 - All contributors and users of this project
+
+---
+
+## 📞 Support
+
+For issues, feature requests, or contributions:
+- 📧 Open an issue on GitHub
+- 💬 Join the discussion
+- ⭐ Star the repository if you find it useful
 
 ---
 
@@ -430,6 +424,6 @@ Do not use this tool to:
 
 **Made with ❤️ for the TikTok community**
 
-[Report Bug](https://github.com/yourusername/tiktok-media-downloader/issues) • [Request Feature](https://github.com/yourusername/tiktok-media-downloader/issues) • [Star on GitHub](https://github.com/yourusername/tiktok-media-downloader)
+**[⬆ Back to Top](#tiktok-media-downloader--injector)**
 
 </div>
