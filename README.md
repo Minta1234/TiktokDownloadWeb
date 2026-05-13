@@ -98,7 +98,7 @@ The **TikTok Media Downloader & Injector** is a standalone HTML/JavaScript appli
 # Paste a TikTok URL and click download
 ```
 
-### System Requirements
+### System Requirements For Web
 
 | Requirement | Minimum | Recommended |
 |-------------|---------|-------------|
