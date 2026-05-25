@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/187171179?v=4">
+    <title>TikTok Media Downloader & Injector - Extract Videos, Images & JSON</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 30px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #fe2c55, #25f4ee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: rgba(255,255,255,0.7);
+            font-size: 1rem;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 10px;
+        }
+
+        .tab-btn {
+            background: rgba(255,255,255,0.05);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 40px;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .tab-btn:hover {
+            background: rgba(255,255,255,0.15);
+            transform: translateY(-2px);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #fe2c55, #25f4ee);
+            box-shadow: 0 4px 15px rgba(254,44,85,0.3);
+        }
+
+        /* Panels */
+        .panel {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Cards */
+        .card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title i {
+            font-size: 1.5rem;
+        }
+
+        /* Form Elements */
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: rgba(255,255,255,0.8);
+            font-weight: 500;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #fe2c55;
+            box-shadow: 0 0 0 2px rgba(254,44,85,0.2);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+            font-family: monospace;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 12px 28px;
+            border: none;
+            border-radius: 40px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #fe2c55, #25f4ee);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(254,44,85,0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .btn-danger {
+            background: rgba(220,53,69,0.2);
+            border: 1px solid #dc3545;
+            color: #dc3545;
+        }
+
+        .btn-danger:hover {
+            background: #dc3545;
+            color: #fff;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #fe2c55, #25f4ee);
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 10px;
+        }
+
+        .progress-text {
+            margin-top: 8px;
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.6);
+            text-align: center;
+        }
+
+        /* Results Grid */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .result-card {
+            background: rgba(0,0,0,0.3);
+            border-radius: 15px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .result-card:hover {
+            transform: translateY(-3px);
+            border-color: #fe2c55;
+        }
+
+        .result-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .result-card .result-title {
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .result-card .result-info {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* JSON Viewer */
+        .json-viewer {
+            background: rgba(0,0,0,0.4);
+            border-radius: 12px;
+            padding: 15px;
+            max-height: 500px;
+            overflow: auto;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.85rem;
+        }
+
+        .json-key {
+            color: #fe2c55;
+        }
+
+        .json-string {
+            color: #25f4ee;
+        }
+
+        .json-number {
+            color: #ffbe0b;
+        }
+
+        .json-boolean {
+            color: #2dde98;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255,255,255,0.1);
+            border-top-color: #fe2c55;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Toast Notifications */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(10px);
+            padding: 15px 25px;
+            border-radius: 12px;
+            border-left: 4px solid #fe2c55;
+            animation: slideIn 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.success {
+            border-left-color: #2dde98;
+        }
+
+        .toast.error {
+            border-left-color: #dc3545;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Region Badge */
+        .region-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 40px;
+            padding: 6px 16px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        .region-badge .flag {
+            font-size: 1.3rem;
+        }
+
+        .video-info-bar {
+            display: none;
+            margin-top: 18px;
+            padding: 16px 20px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,0.08);
+            animation: fadeIn 0.4s ease;
+        }
+
+        .video-info-bar .info-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .video-info-bar .info-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-label {
+            color: rgba(255,255,255,0.5);
+            font-size: 0.8rem;
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Queue List */
+        .queue-list {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .queue-item {
+            background: rgba(0,0,0,0.2);
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .queue-item .url {
+            font-size: 0.85rem;
+            font-family: monospace;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            flex: 1;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .tabs {
+                gap: 5px;
+            }
+            
+            .tab-btn {
+                padding: 8px 16px;
+                font-size: 0.85rem;
+            }
+            
+            .results-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎵 TikTok Media Downloader & Injector</h1>
+            <p>Download videos, extract high-quality images, parse JSON metadata, and inject custom data</p>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="downloader">📥 Downloader</button>
+            <button class="tab-btn" data-tab="extractor">📸 Image Extractor</button>
+            <button class="tab-btn" data-tab="json">📄 JSON Parser</button>
+            <button class="tab-btn" data-tab="injector">💉 JSON Injector</button>
+            <button class="tab-btn" data-tab="batch">📦 Batch Downloader</button>
+        </div>
+
+        <!-- Panel 1: Downloader -->
+        <div id="downloader" class="panel active">
+            <div class="card">
+                <div class="card-title">
+                    <span>🎬</span> TikTok Video Downloader
+                </div>
+                <div class="input-group">
+                    <label>🔗 TikTok Video URL</label>
+                    <input type="text" id="video-url" placeholder="https://www.tiktok.com/@username/video/1234567890" autocomplete="off">
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="downloadVideo()">⬇️ Download Video</button>
+                    <button class="btn btn-secondary" onclick="downloadAudio()">🎵 Download Audio Only</button>
+                </div>
+                <div id="video-progress" class="progress-container">
+                    <div class="progress-bar"><div class="progress-fill"></div></div>
+                    <div class="progress-text"></div>
+                </div>
+
+                <!-- Video Info Bar (shows after fetch) -->
+                <div id="video-info-bar" class="video-info-bar">
+                    <div class="info-row">
+                        <div id="region-badge" class="region-badge">🌐 <span id="region-text">–</span></div>
+                        <div id="author-badge" class="region-badge">👤 <span id="author-text">–</span></div>
+                        <div id="duration-badge" class="region-badge">⏱ <span id="duration-text">–</span></div>
+                    </div>
+                    <div class="info-row">
+                        <span style="font-size:0.85rem; color:rgba(255,255,255,0.6);">📊</span>
+                        <span id="stats-text" style="font-size:0.85rem; color:rgba(255,255,255,0.7);"></span>
+                    </div>
+                    <div class="info-row" id="title-row">
+                        <span style="font-size:0.85rem; color:rgba(255,255,255,0.5);">📝</span>
+                        <span id="title-text" style="font-size:0.85rem;"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    <span>📋</span> Download Queue
+                </div>
+                <div id="queue-list" class="queue-list"></div>
+                <div class="btn-group" style="margin-top: 15px;">
+                    <button class="btn btn-secondary" onclick="clearQueue()">🗑️ Clear Queue</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panel 2: Image Extractor -->
+        <div id="extractor" class="panel">
+            <div class="card">
+                <div class="card-title">
+                    <span>📸</span> Extract Hidden Images from TikTok Photo Posts
+                </div>
+                <div class="input-group">
+                    <label>🔗 TikTok Photo Post URL</label>
+                    <input type="text" id="photo-url" placeholder="https://www.tiktok.com/@username/photo/1234567890" autocomplete="off">
+                </div>
+                <button class="btn btn-primary" onclick="extractImages()">🔍 Extract Images</button>
+                
+                <div id="extract-progress" class="progress-container">
+                    <div class="progress-bar"><div class="progress-fill"></div></div>
+                    <div class="progress-text"></div>
+                </div>
+                
+                <div id="images-result"></div>
+            </div>
+        </div>
+
+        <!-- Panel 3: JSON Parser -->
+        <div id="json" class="panel">
+            <div class="card">
+                <div class="card-title">
+                    <span>📄</span> Parse TikTok JSON Metadata
+                </div>
+                <div class="input-group">
+                    <label>🔗 TikTok URL (Video/Photo)</label>
+                    <input type="text" id="json-url" placeholder="https://www.tiktok.com/@username/video/1234567890" autocomplete="off">
+                </div>
+                <button class="btn btn-primary" onclick="fetchMetadata()">🔍 Fetch Metadata</button>
+                
+                <div id="json-spinner" style="display: none;"><div class="spinner"></div></div>
+                <div id="json-result" class="json-viewer" style="display: none;"></div>
+            </div>
+        </div>
+
+        <!-- Panel 4: JSON Injector -->
+        <div id="injector" class="panel">
+            <div class="card">
+                <div class="card-title">
+                    <span>💉</span> Inject Custom JSON into Content
+                </div>
+                <div class="input-group">
+                    <label>🎬 Video URL (for metadata reference)</label>
+                    <input type="text" id="inject-url" placeholder="https://www.tiktok.com/@username/video/1234567890">
+                </div>
+                <div class="input-group">
+                    <label>📝 Custom JSON Data to Inject</label>
+                    <textarea id="custom-json" placeholder='{"custom_field": "value", "tags": ["tag1", "tag2"]}'></textarea>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="injectJSON()">💉 Inject JSON</button>
+                    <button class="btn btn-secondary" onclick="downloadInjectedJSON()">📥 Download Injected JSON</button>
+                </div>
+                <div id="inject-result" class="json-viewer" style="display: none;"></div>
+            </div>
+        </div>
+
+        <!-- Panel 5: Batch Downloader -->
+        <div id="batch" class="panel">
+            <div class="card">
+                <div class="card-title">
+                    <span>📦</span> Batch Download Multiple URLs
+                </div>
+                <div class="input-group">
+                    <label>📋 URLs (one per line)</label>
+                    <textarea id="batch-urls" placeholder="https://www.tiktok.com/@user/video/1234567890&#10;https://www.tiktok.com/@user/photo/9876543210&#10;https://www.tiktok.com/@user/video/5555555555"></textarea>
+                </div>
+                <div class="input-group">
+                    <label>⚙️ Options</label>
+                    <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                        <label style="display: flex; align-items: center; gap: 5px;">
+                            <input type="checkbox" id="batch-video" checked> Download Videos
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 5px;">
+                            <input type="checkbox" id="batch-audio"> Download Audio Only
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 5px;">
+                            <input type="checkbox" id="batch-json"> Extract JSON Metadata
+                        </label>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="batchDownload()">🚀 Start Batch Download</button>
+                
+                <div id="batch-progress" class="progress-container">
+                    <div class="progress-bar"><div class="progress-fill"></div></div>
+                    <div class="progress-text"></div>
+                </div>
+                
+                <div id="batch-results"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Queue storage
+        let downloadQueue = [];
+        let currentMetadata = null;
+        let injectedData = null;
+        let extractedImages = [];
+
+        // API endpoints (using proxy to avoid CORS)
+        const API_PROXY = 'https://api.allorigins.win/raw?url=';
+        const TIKWM_API = 'https://www.tikwm.com/api/';
+
+        // Region map: ISO 3166-1 alpha-2 → flag + country name
+        const REGION_MAP = {
+            AF:'🇦🇫 Afghanistan', AL:'🇦🇱 Albania', DZ:'🇩🇿 Algeria', AR:'🇦🇷 Argentina',
+            AU:'🇦🇺 Australia', AT:'🇦🇹 Austria', BD:'🇧🇩 Bangladesh', BE:'🇧🇪 Belgium',
+            BR:'🇧🇷 Brazil', CA:'🇨🇦 Canada', CL:'🇨🇱 Chile', CN:'🇨🇳 China',
+            CO:'🇨🇴 Colombia', CZ:'🇨🇿 Czech Republic', DK:'🇩🇰 Denmark', EG:'🇪🇬 Egypt',
+            FI:'🇫🇮 Finland', FR:'🇫🇷 France', DE:'🇩🇪 Germany', GH:'🇬🇭 Ghana',
+            GR:'🇬🇷 Greece', HK:'🇭🇰 Hong Kong', HU:'🇭🇺 Hungary', IN:'🇮🇳 India',
+            ID:'🇮🇩 Indonesia', IR:'🇮🇷 Iran', IQ:'🇮🇶 Iraq', IE:'🇮🇪 Ireland',
+            IL:'🇮🇱 Israel', IT:'🇮🇹 Italy', JP:'🇯🇵 Japan', JO:'🇯🇴 Jordan',
+            KZ:'🇰🇿 Kazakhstan', KE:'🇰🇪 Kenya', KR:'🇰🇷 South Korea', KW:'🇰🇼 Kuwait',
+            LB:'🇱🇧 Lebanon', MY:'🇲🇾 Malaysia', MX:'🇲🇽 Mexico', MA:'🇲🇦 Morocco',
+            NL:'🇳🇱 Netherlands', NZ:'🇳🇿 New Zealand', NG:'🇳🇬 Nigeria', NO:'🇳🇴 Norway',
+            PK:'🇵🇰 Pakistan', PH:'🇵🇭 Philippines', PL:'🇵🇱 Poland', PT:'🇵🇹 Portugal',
+            QA:'🇶🇦 Qatar', RO:'🇷🇴 Romania', RU:'🇷🇺 Russia', SA:'🇸🇦 Saudi Arabia',
+            SG:'🇸🇬 Singapore', ZA:'🇿🇦 South Africa', ES:'🇪🇸 Spain', SE:'🇸🇪 Sweden',
+            CH:'🇨🇭 Switzerland', TW:'🇹🇼 Taiwan', TH:'🇹🇭 Thailand', TR:'🇹🇷 Turkey',
+            UA:'🇺🇦 Ukraine', AE:'🇦🇪 UAE', GB:'🇬🇧 United Kingdom', US:'🇺🇸 United States',
+            VN:'🇻🇳 Vietnam', YE:'🇾🇪 Yemen', ZW:'🇿🇼 Zimbabwe'
+        };
+
+        function getRegionLabel(code) {
+            if (!code) return '🌐 Unknown';
+            const upper = code.toUpperCase();
+            return REGION_MAP[upper] || `🌐 ${upper}`;
+        }
+
+        function formatDuration(sec) {
+            const m = Math.floor(sec / 60);
+            const s = sec % 60;
+            return m > 0 ? `${m}m ${s}s` : `${s}s`;
+        }
+
+        function showVideoInfoBar(data) {
+            const bar = document.getElementById('video-info-bar');
+            if (!bar) return;
+            document.getElementById('region-text').textContent = getRegionLabel(data.region);
+            document.getElementById('author-text').textContent = `${data.author?.nickname || data.author?.unique_id || '–'} (@${data.author?.unique_id || '–'})`;
+            document.getElementById('duration-text').textContent = formatDuration(data.duration || 0);
+            document.getElementById('stats-text').textContent =
+                `▶ ${(data.play_count||0).toLocaleString()} views  ❤️ ${(data.digg_count||0).toLocaleString()} likes  💬 ${(data.comment_count||0).toLocaleString()} comments  🔗 ${(data.share_count||0).toLocaleString()} shares`;
+            document.getElementById('title-text').textContent = data.title || '(no title)';
+            bar.style.display = 'block';
+        }
+
+        // Toast notification
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        // Update progress bar
+        function updateProgress(containerId, percent, text) {
+            const container = document.getElementById(containerId);
+            if (container) {
+                container.style.display = 'block';
+                const fill = container.querySelector('.progress-fill');
+                const textEl = container.querySelector('.progress-text');
+                if (fill) fill.style.width = percent + '%';
+                if (textEl) textEl.textContent = text;
+            }
+        }
+
+        // Hide progress
+        function hideProgress(containerId) {
+            const container = document.getElementById(containerId);
+            if (container) container.style.display = 'none';
+        }
+
+        // Format file size
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // Download video using TikWM API
+        async function downloadVideo() {
+            const url = document.getElementById('video-url').value.trim();
+            if (!url) {
+                showToast('Please enter a TikTok video URL', 'error');
+                return;
+            }
+
+            updateProgress('video-progress', 0, 'Fetching video info...');
+
+            try {
+                const response = await fetch(`${TIKWM_API}?url=${encodeURIComponent(url)}`);
+                const data = await response.json();
+
+                if (data.code === 0 && data.data) {
+                    const videoUrl = data.data.play;
+                    const title = data.data.title || 'tiktok_video';
+
+                    // Show region & video info
+                    showVideoInfoBar(data.data);
+                    
+                    updateProgress('video-progress', 50, 'Downloading video...');
+                    
+                    // Fetch video blob
+                    const videoResponse = await fetch(videoUrl);
+                    const blob = await videoResponse.blob();
+                    
+                    // Create download link
+                    const downloadUrl = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = downloadUrl;
+                    a.download = `${title.substring(0, 50)}.mp4`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(downloadUrl);
+                    
+                    updateProgress('video-progress', 100, 'Download complete!');
+                    setTimeout(() => hideProgress('video-progress'), 2000);
+                    showToast('Video downloaded successfully!', 'success');
+                    
+                    // Add to queue
+                    addToQueue(url, title, 'video');
+                } else {
+                    throw new Error('Failed to fetch video info');
+                }
+            } catch (error) {
+                console.error(error);
+                showToast('Error downloading video. Please check the URL and try again.', 'error');
+                hideProgress('video-progress');
+            }
+        }
+
+        // Download audio only
+        async function downloadAudio() {
+            const url = document.getElementById('video-url').value.trim();
+            if (!url) {
+                showToast('Please enter a TikTok video URL', 'error');
+                return;
+            }
+
+            updateProgress('video-progress', 0, 'Fetching audio info...');
+
+            try {
+                const response = await fetch(`${TIKWM_API}?url=${encodeURIComponent(url)}`);
+                const data = await response.json();
+
+                if (data.code === 0 && data.data) {
+                    const musicUrl = data.data.music;
+                    const title = data.data.title || 'tiktok_audio';
+
+                    // Show region & video info
+                    showVideoInfoBar(data.data);
+                    
+                    updateProgress('video-progress', 50, 'Downloading audio...');
+                    
+                    const audioResponse = await fetch(musicUrl);
+                    const blob = await audioResponse.blob();
+                    
+                    const downloadUrl = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = downloadUrl;
+                    a.download = `${title.substring(0, 50)}.mp3`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(downloadUrl);
+                    
+                    updateProgress('video-progress', 100, 'Download complete!');
+                    setTimeout(() => hideProgress('video-progress'), 2000);
+                    showToast('Audio downloaded successfully!', 'success');
+                    
+                    addToQueue(url, title, 'audio');
+                } else {
+                    throw new Error('Failed to fetch audio info');
+                }
+            } catch (error) {
+                showToast('Error downloading audio', 'error');
+                hideProgress('video-progress');
+            }
+        }
+
+        // Extract images from photo post
+        async function extractImages() {
+            const url = document.getElementById('photo-url').value.trim();
+            if (!url) {
+                showToast('Please enter a TikTok photo post URL', 'error');
+                return;
+            }
+
+            updateProgress('extract-progress', 0, 'Scanning for images...');
+            document.getElementById('images-result').innerHTML = '';
+
+            try {
+                const response = await fetch(`${TIKWM_API}?url=${encodeURIComponent(url)}`);
+                const data = await response.json();
+
+                if (data.code === 0 && data.data) {
+                    const images = data.data.images || [];
+                    const title = data.data.title || 'tiktok_photos';
+                    const author = data.data.author?.nickname || 'Unknown';
+                    
+                    if (images.length === 0) {
+                        showToast('No images found in this post', 'error');
+                        hideProgress('extract-progress');
+                        return;
+                    }
+                    
+                    extractedImages = images;
+                    updateProgress('extract-progress', 50, `Found ${images.length} images...`);
+                    
+                    // Display images
+                    const resultHtml = `
+                        <div style="margin-top: 20px;">
+                            <h3>📸 ${images.length} Images Found</h3>
+                            <p><strong>Author:</strong> ${author}</p>
+                            <p><strong>Title:</strong> ${title.substring(0, 100)}</p>
+                            <div class="results-grid" id="image-grid"></div>
+                            <div class="btn-group" style="margin-top: 15px;">
+                                <button class="btn btn-primary" onclick="downloadAllImages()">💾 Download All Images</button>
+                            </div>
+                        </div>
+                    `;
+                    document.getElementById('images-result').innerHTML = resultHtml;
+                    
+                    const grid = document.getElementById('image-grid');
+                    for (let i = 0; i < images.length; i++) {
+                        const imgUrl = images[i];
+                        const card = document.createElement('div');
+                        card.className = 'result-card';
+                        card.onclick = () => downloadSingleImage(imgUrl, i + 1);
+                        card.innerHTML = `
+                            <img src="${imgUrl}" alt="Image ${i + 1}" onerror="this.src='https://via.placeholder.com/300?text=Loading...'">
+                            <div class="result-title">Image ${i + 1}</div>
+                            <div class="result-info">Click to download</div>
+                        `;
+                        grid.appendChild(card);
+                    }
+                    
+                    updateProgress('extract-progress', 100, 'Ready!');
+                    setTimeout(() => hideProgress('extract-progress'), 2000);
+                    showToast(`Found ${images.length} high-quality images!`, 'success');
+                } else {
+                    throw new Error('No images found');
+                }
+            } catch (error) {
+                showToast('Error extracting images. Make sure this is a photo post.', 'error');
+                hideProgress('extract-progress');
+            }
+        }
+
+        // Download single image
+        async function downloadSingleImage(url, index) {
+            try {
+                const response = await fetch(url);
+                const blob = await response.blob();
+                const downloadUrl = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = downloadUrl;
+                a.download = `tiktok_image_${index}.jpg`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(downloadUrl);
+                showToast(`Image ${index} downloaded!`, 'success');
+            } catch (error) {
+                showToast('Error downloading image', 'error');
+            }
+        }
+
+        // Download all images
+        async function downloadAllImages() {
+            if (!extractedImages.length) return;
+            
+            showToast(`Downloading ${extractedImages.length} images...`, 'info');
+            
+            for (let i = 0; i < extractedImages.length; i++) {
+                await new Promise(resolve => setTimeout(resolve, 500));
+                downloadSingleImage(extractedImages[i], i + 1);
+            }
+        }
+
+        // Fetch metadata
+        async function fetchMetadata() {
+            const url = document.getElementById('json-url').value.trim();
+            if (!url) {
+                showToast('Please enter a TikTok URL', 'error');
+                return;
+            }
+
+            document.getElementById('json-spinner').style.display = 'block';
+            document.getElementById('json-result').style.display = 'none';
+
+            try {
+                const response = await fetch(`${TIKWM_API}?url=${encodeURIComponent(url)}`);
+                const data = await response.json();
+
+                if (data.code === 0) {
+                    currentMetadata = data.data;
+                    displayJSON(currentMetadata);
+
+                    // Show region badge above JSON
+                    const region = data.data.region;
+                    if (region) {
+                        let badge = document.getElementById('json-region-badge');
+                        if (!badge) {
+                            badge = document.createElement('div');
+                            badge.id = 'json-region-badge';
+                            badge.style.cssText = 'margin-bottom:12px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;';
+                            document.getElementById('json-result').before(badge);
+                        }
+                        badge.innerHTML = `
+                            <span class="region-badge">${getRegionLabel(region)}</span>
+                            <span class="region-badge">👤 ${data.data.author?.nickname || '–'} (@${data.data.author?.unique_id || '–'})</span>
+                            <span class="region-badge">⏱ ${formatDuration(data.data.duration||0)}</span>
+                        `;
+                        badge.style.display = 'flex';
+                    }
+
+                    showToast('Metadata fetched successfully!', 'success');
+                } else {
+                    throw new Error('Failed to fetch metadata');
+                }
+            } catch (error) {
+                showToast('Error fetching metadata', 'error');
+                document.getElementById('json-spinner').style.display = 'none';
+            }
+        }
+
+        // Display JSON with syntax highlighting
+        function displayJSON(obj, elementId = 'json-result') {
+            const container = document.getElementById(elementId);
+            if (!container) return;
+            
+            const jsonStr = JSON.stringify(obj, null, 2);
+            const highlighted = jsonStr.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                .replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, (match) => {
+                    let cls = 'json-number';
+                    if (/^"/.test(match)) {
+                        if (/:$/.test(match)) cls = 'json-key';
+                        else cls = 'json-string';
+                    } else if (/true|false/.test(match)) cls = 'json-boolean';
+                    else if (/null/.test(match)) cls = 'json-boolean';
+                    return `<span class="${cls}">${match}</span>`;
+                });
+            
+            container.innerHTML = `<pre style="margin: 0; white-space: pre-wrap; word-break: break-word;">${highlighted}</pre>`;
+            container.style.display = 'block';
+            document.getElementById('json-spinner').style.display = 'none';
+        }
+
+        // Inject JSON
+        async function injectJSON() {
+            const url = document.getElementById('inject-url').value.trim();
+            const customJsonStr = document.getElementById('custom-json').value.trim();
+            
+            if (!customJsonStr) {
+                showToast('Please enter custom JSON data', 'error');
+                return;
+            }
+            
+            try {
+                const customData = JSON.parse(customJsonStr);
+                let baseData = {};
+                
+                if (url) {
+                    const response = await fetch(`${TIKWM_API}?url=${encodeURIComponent(url)}`);
+                    const data = await response.json();
+                    if (data.code === 0) baseData = data.data;
+                }
+                
+                injectedData = {
+                    original_metadata: baseData,
+                    injected_custom_data: customData,
+                    injection_timestamp: new Date().toISOString(),
+                    source_url: url || 'manual_injection'
+                };
+                
+                displayJSON(injectedData, 'inject-result');
+                document.getElementById('inject-result').style.display = 'block';
+                showToast('JSON injected successfully!', 'success');
+            } catch (error) {
+                showToast('Invalid JSON format', 'error');
+            }
+        }
+
+        // Download injected JSON
+        function downloadInjectedJSON() {
+            if (!injectedData) {
+                showToast('No injected data to download', 'error');
+                return;
+            }
+            
+            const jsonStr = JSON.stringify(injectedData, null, 2);
+            const blob = new Blob([jsonStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `tiktok_injected_${Date.now()}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast('JSON downloaded!', 'success');
+        }
+
+        // Batch download
+        async function batchDownload() {
+            const urlsText = document.getElementById('batch-urls').value.trim();
+            if (!urlsText) {
+                showToast('Please enter URLs', 'error');
+                return;
+            }
+            
+            const urls = urlsText.split('\n').filter(u => u.trim());
+            const downloadVideo = document.getElementById('batch-video').checked;
+            const downloadAudio = document.getElementById('batch-audio').checked;
+            const extractJson = document.getElementById('batch-json').checked;
+            
+            if (!downloadVideo && !downloadAudio && !extractJson) {
+                showToast('Select at least one option', 'error');
+                return;
+            }
+            
+            updateProgress('batch-progress', 0, `Processing 0/${urls.length}...`);
+            document.getElementById('batch-results').innerHTML = '<div class="results-grid" id="batch-grid"></div>';
+            const grid = document.getElementById('batch-grid');
+            
+            const results = [];
+            
+            for (let i = 0; i < urls.length; i++) {
+                const url = urls[i].trim();
+                updateProgress('batch-progress', (i / urls.length) * 100, `Processing ${i + 1}/${urls.length}: ${url.substring(0, 50)}...`);
+                
+                try {
+                    const response = await fetch(`${TIKWM_API}?url=${encodeURIComponent(url)}`);
+                    const data = await response.json();
+                    
+                    if (data.code === 0 && data.data) {
+                        const result = { url, title: data.data.title, success: true };
+                        
+                        if (downloadVideo && data.data.play) {
+                            const videoResponse = await fetch(data.data.play);
+                            const blob = await videoResponse.blob();
+                            const downloadUrl = URL.createObjectURL(blob);
+                            const a = document.createElement('a');
+                            a.href = downloadUrl;
+                            a.download = `${(data.data.title || 'video').substring(0, 50)}.mp4`;
+                            document.body.appendChild(a);
+                            a.click();
+                            document.body.removeChild(a);
+                            URL.revokeObjectURL(downloadUrl);
+                            result.videoDownloaded = true;
+                        }
+                        
+                        if (downloadAudio && data.data.music) {
+                            const audioResponse = await fetch(data.data.music);
+                            const blob = await audioResponse.blob();
+                            const downloadUrl = URL.createObjectURL(blob);
+                            const a = document.createElement('a');
+                            a.href = downloadUrl;
+                            a.download = `${(data.data.title || 'audio').substring(0, 50)}.mp3`;
+                            document.body.appendChild(a);
+                            a.click();
+                            document.body.removeChild(a);
+                            URL.revokeObjectURL(downloadUrl);
+                            result.audioDownloaded = true;
+                        }
+                        
+                        if (extractJson) {
+                            const jsonStr = JSON.stringify(data.data, null, 2);
+                            const blob = new Blob([jsonStr], { type: 'application/json' });
+                            const downloadUrl = URL.createObjectURL(blob);
+                            const a = document.createElement('a');
+                            a.href = downloadUrl;
+                            a.download = `${(data.data.title || 'metadata').substring(0, 50)}.json`;
+                            document.body.appendChild(a);
+                            a.click();
+                            document.body.removeChild(a);
+                            URL.revokeObjectURL(downloadUrl);
+                            result.jsonDownloaded = true;
+                        }
+                        
+                        results.push(result);
+                        
+                        const card = document.createElement('div');
+                        card.className = 'result-card';
+                        card.innerHTML = `
+                            <div class="result-title">✅ ${result.title?.substring(0, 50) || 'Success'}</div>
+                            <div class="result-info">Video: ${result.videoDownloaded ? '✓' : '✗'} | Audio: ${result.audioDownloaded ? '✓' : '✗'} | JSON: ${result.jsonDownloaded ? '✓' : '✗'}</div>
+                        `;
+                        grid.appendChild(card);
+                    } else {
+                        results.push({ url, success: false, error: 'Failed to fetch' });
+                        const card = document.createElement('div');
+                        card.className = 'result-card';
+                        card.innerHTML = `<div class="result-title">❌ Failed: ${url.substring(0, 40)}</div>`;
+                        grid.appendChild(card);
+                    }
+                } catch (error) {
+                    results.push({ url, success: false, error: error.message });
+                    const card = document.createElement('div');
+                    card.className = 'result-card';
+                    card.innerHTML = `<div class="result-title">❌ Error: ${url.substring(0, 40)}</div>`;
+                    grid.appendChild(card);
+                }
+            }
+            
+            updateProgress('batch-progress', 100, `Complete! Processed ${results.filter(r => r.success).length}/${urls.length} URLs`);
+            setTimeout(() => hideProgress('batch-progress'), 3000);
+            showToast(`Batch complete! ${results.filter(r => r.success).length} successful`, 'success');
+        }
+
+        // Queue management
+        function addToQueue(url, title, type) {
+            downloadQueue.unshift({ url, title, type, timestamp: new Date() });
+            updateQueueDisplay();
+        }
+
+        function updateQueueDisplay() {
+            const container = document.getElementById('queue-list');
+            if (!container) return;
+            
+            if (downloadQueue.length === 0) {
+                container.innerHTML = '<div style="text-align: center; padding: 20px; color: rgba(255,255,255,0.5);">No items in queue</div>';
+                return;
+            }
+            
+            container.innerHTML = downloadQueue.map(item => `
+                <div class="queue-item">
+                    <span class="url">${item.type === 'video' ? '🎬' : '🎵'} ${item.title?.substring(0, 50) || item.url.substring(0, 50)}</span>
+                    <span style="font-size: 0.75rem; color: rgba(255,255,255,0.4);">${new Date(item.timestamp).toLocaleTimeString()}</span>
+                </div>
+            `).join('');
+        }
+
+        function clearQueue() {
+            downloadQueue = [];
+            updateQueueDisplay();
+            showToast('Queue cleared', 'info');
+        }
+
+        // Tab switching
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById(btn.dataset.tab).classList.add('active');
+            });
+        });
+
+        // Add example URLs
+        function addExample() {
+            document.getElementById('video-url').value = 'https://www.tiktok.com/@tiktok/video/1234567890';
+        }
+    </script>
+</body>
+</html>
